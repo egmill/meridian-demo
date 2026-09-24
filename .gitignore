@@ -1,0 +1,18 @@
+# Build output
+target/
+dist/
+node_modules/
+coverage/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Local
+.logs/
+.env
+.idea/
+.vscode/
+.DS_Store

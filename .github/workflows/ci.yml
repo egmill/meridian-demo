@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  transaction-service:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/transaction-service
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Unit tests + coverage
+        run: mvn -B test
