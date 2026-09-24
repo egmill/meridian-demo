@@ -32,6 +32,8 @@ function errorText(result) {
   return b.error || b.detail || `Request failed (HTTP ${result.status})`;
 }
 
+const money = (value) => Number(value).toFixed(2);
+
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -66,7 +68,7 @@ async function loadAccounts() {
     if (!r.ok) throw new Error();
     body.innerHTML = r.body.map((a) => `
       <tr><td>${escapeHtml(a.id)}</td><td>${escapeHtml(a.name)}</td>
-      <td class="num">$${escapeHtml(a.balance)}</td></tr>`).join("");
+      <td class="num">$${escapeHtml(money(a.balance))}</td></tr>`).join("");
 
     const options = r.body.map((a) => `<option value="${escapeHtml(a.id)}">${escapeHtml(a.id)} · ${escapeHtml(a.name)}</option>`).join("");
     for (const id of ["from-select", "to-select"]) {
@@ -92,7 +94,7 @@ $("transfer-form").addEventListener("submit", async (e) => {
   try {
     const r = await call(`${SERVICES.transactions}/transfers`, { method: "POST", body: JSON.stringify(payload) });
     if (r.ok) {
-      show(out, `Transfer ${r.body.reference} complete: $${r.body.amount} from ${r.body.fromAccountId} to ${r.body.toAccountId}.`, true);
+      show(out, `Transfer ${r.body.reference} complete: $${money(r.body.amount)} from ${r.body.fromAccountId} to ${r.body.toAccountId}.`, true);
     } else {
       show(out, errorText(r), false);
     }
