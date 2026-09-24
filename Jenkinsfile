@@ -20,5 +20,22 @@ pipeline {
                 }
             }
         }
+
+        stage('audit-log: test') {
+            steps {
+                dir('services/audit-log') {
+                    sh '''
+                        python3.11 -m venv .venv
+                        .venv/bin/pip install -r requirements-dev.txt
+                        .venv/bin/pytest --cov=app --junitxml=test-results.xml
+                    '''
+                }
+            }
+            post {
+                always {
+                    junit 'services/audit-log/test-results.xml'
+                }
+            }
+        }
     }
 }
