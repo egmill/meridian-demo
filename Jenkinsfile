@@ -20,5 +20,18 @@ pipeline {
                 }
             }
         }
+
+        stage('transaction-service: mutation') {
+            steps {
+                dir('services/transaction-service') {
+                    sh 'mvn -B org.pitest:pitest-maven:mutationCoverage -DmutationThreshold=70'
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'services/transaction-service/target/site/jacoco/**, services/transaction-service/target/pit-reports/**', allowEmptyArchive: true
+                }
+            }
+        }
     }
 }

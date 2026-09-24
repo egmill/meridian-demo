@@ -20,3 +20,13 @@ jobs:
           cache: maven
       - name: Unit tests + coverage
         run: mvn -B test
+      - name: Mutation testing (PIT, threshold 70%)
+        run: mvn -B org.pitest:pitest-maven:mutationCoverage -DmutationThreshold=70
+      - name: Upload coverage and mutation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: transaction-service-reports
+          path: |
+            services/transaction-service/target/site/jacoco
+            services/transaction-service/target/pit-reports
