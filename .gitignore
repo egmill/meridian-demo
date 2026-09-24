@@ -9,6 +9,8 @@ __pycache__/
 *.pyc
 .venv/
 .pytest_cache/
+.coverage
+test-results.xml
 
 # Local
 .logs/
