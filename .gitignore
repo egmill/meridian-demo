@@ -16,3 +16,7 @@ __pycache__/
 .idea/
 .vscode/
 .DS_Store
+
+# Test output
+test-results.xml
+.coverage

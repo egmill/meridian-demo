@@ -20,3 +20,22 @@ jobs:
           cache: maven
       - name: Unit tests + coverage
         run: mvn -B test
+
+  pii-vault:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/pii-vault
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            services/pii-vault/requirements.txt
+            services/pii-vault/requirements-dev.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Unit tests + coverage
+        run: pytest --cov=app --junitxml=test-results.xml
