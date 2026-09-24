@@ -18,7 +18,7 @@ start_python() {
   (
     cd "$ROOT/services/$name"
     python3 -m pip install -q -r requirements.txt
-    exec python3 -m uvicorn app.main:app --port "$port"
+    exec python3 -m uvicorn app.main:app --port "$port" --http h11
   ) >"$LOGS/$name.log" 2>&1 &
   pids+=($!)
   echo "  $name        → http://localhost:$port  (logs: .logs/$name.log)"
