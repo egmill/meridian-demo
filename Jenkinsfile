@@ -5,6 +5,7 @@ pipeline {
     tools {
         jdk 'jdk17'
         maven 'maven3'
+        nodejs 'node20'
     }
 
     stages {
@@ -17,6 +18,15 @@ pipeline {
             post {
                 always {
                     junit 'services/transaction-service/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('auth-gateway: test') {
+            steps {
+                dir('services/auth-gateway') {
+                    sh 'npm ci'
+                    sh 'npm test -- --coverage'
                 }
             }
         }
